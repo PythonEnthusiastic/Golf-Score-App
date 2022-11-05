@@ -36,9 +36,9 @@ async function createTable() {
     let courseID = document.getElementById("course-select")
     let courseInformation = await getCourseFromId(courseID.value);
     let teeInformation = document.querySelector("#tee-box-select");
-    let informationTable = document.querySelector(".table");
+    let [firstTable, secondTable] = document.getElementsByClassName("table");
 
-    informationTable.innerHTML = `
+    let tableStructure = `
         <thead>
             <tr>
                 <th scope="col">Hole</th>
@@ -57,36 +57,121 @@ async function createTable() {
         </tbody>
     `;
 
-    let tableBody = document.querySelector("tbody");
+    firstTable.innerHTML = tableStructure;
+    secondTable.innerHTML = tableStructure; 
 
-    let tHeader = informationTable.children[0].children[0];
+    // Get the thead and tbody for the first table
+    let firstTableBody = firstTable.children[1];
+    let firstTableHeader = firstTable.children[0].children[0];
 
-    let yardRow = tableBody.children[0];
-    let parRow = tableBody.children[1];
-    let HandicapRow = tableBody.children[2];
+    // Get the thead and tbody for the second table
+    let secondTableBody = secondTable.children[1];
+    let secondTableHeader = secondTable.children[0].children[0];
 
-    courseInformation.forEach(val => {
+    // Make into functions and pass the bodies
+    let yardRow = (tableBody) => tableBody.children[0];
+    let parRow = (tableBody) => tableBody.children[1];
+    let handicapRow = (tableBody) => tableBody.children[2];
+    
+    // Total of the yard, par, and handicap row
+    let totalYard = 0;
+    let totalPar = 0;
+    let totalHandicap = 0;
 
-        tHeader.innerHTML += `
-            <th scope="col">${val.hole}</th>
+    // First card
+    for (let i = 0; i < 9; i++) {
+        firstTableHeader.innerHTML += `
+            <th scope="col">${courseInformation[i].hole}</th>
         `;
 
-        val.teeBoxes.forEach(tee => {
+        courseInformation[i].teeBoxes.forEach(tee => {
             if (tee.teeTypeId == teeInformation.value) {
-                yardRow.innerHTML += `
+                yardRow(firstTableBody).innerHTML += `
                     <td>${tee.yards}</td>
                 `;
 
-                parRow.innerHTML += `
+                parRow(firstTableBody).innerHTML += `
                     <td>${tee.par}</td>
                 `;
 
-                HandicapRow.innerHTML += `
+                handicapRow(firstTableBody).innerHTML += `
                     <td>${tee.hcp}</td>
                 `;
+
+                totalYard += tee.yards;
+                totalPar += tee.par;
+                totalHandicap += tee.hcp;
             }
         })
-    });
+    }
+
+    // Add header for first table
+    firstTableHeader.innerHTML += `
+        <tr>
+            <th scope="col">Out</th>
+        </tr>
+    `;
+
+    // Add total for first table
+    yardRow(firstTableBody).innerHTML += `
+        <td>${totalYard}</td>
+    `;
+    parRow(firstTableBody).innerHTML += `
+        <td>${totalPar}</td>
+    `;
+    handicapRow(firstTableBody).innerHTML += `
+        <td>${totalHandicap}</td>
+    `;
+
+    // Reset back to zero to only add total for 9-18
+    totalYard = 0;
+    totalPar = 0;
+    totalHandicap = 0;
+
+    // Second card
+    for (let i = 9; i < 18; i++) {
+        secondTableHeader.innerHTML += `
+            <th scope="col">${courseInformation[i].hole}</th>
+        `;
+
+        courseInformation[i].teeBoxes.forEach(tee => {
+            if (tee.teeTypeId == teeInformation.value) {
+                yardRow(secondTableBody).innerHTML += `
+                    <td>${tee.yards}</td>
+                `;
+
+                parRow(secondTableBody).innerHTML += `
+                    <td>${tee.par}</td>
+                `;
+
+                handicapRow(secondTableBody).innerHTML += `
+                    <td>${tee.hcp}</td>
+                `;
+
+                totalYard += tee.yards;
+                totalPar += tee.par;
+                totalHandicap += tee.hcp;
+            }
+        })
+    }
+
+    // Add header for second table
+    secondTableHeader.innerHTML += `
+        <tr>
+            <th scope="col">In</th>
+        </tr>
+    `;
+
+    // Add total for second table body
+    yardRow(secondTableBody).innerHTML += `
+        <td>${totalYard}</td>
+    `;
+    parRow(secondTableBody).innerHTML += `
+        <td>${totalPar}</td>
+    `;
+    handicapRow(secondTableBody).innerHTML += `
+        <td>${totalHandicap}</td>
+    `;
 }
 
 function addPlayer() {
@@ -100,20 +185,25 @@ function addPlayer() {
         return;
     }
 
-    let tableBody = document.querySelector("tbody");
+    let [firstTable, secondTable] = document.getElementsByTagName("tbody")
 
-    tableBody.innerHTML += `
+    let playerNameRow = `
         <tr>
             <th>${name.value}</th>
         </tr>
     `;
 
-    console.log(tableBody.children)
+    firstTable.innerHTML += playerNameRow;
+    secondTable.innerHTML += playerNameRow;
 
-    for (let i = 0; i < 18; i++) {
-        tableBody.children[tableBody.children.length - 1].innerHTML += `
+    for (let i = 0; i < 10; i++) {
+        firstTable.children[firstTable.children.length - 1].innerHTML += `
             <td>0</td>
-        `;   
+        `;
+
+        secondTable.children[secondTable.children.length - 1].innerHTML += `
+            <td>0</td>
+        `; 
     }
 
     playerNames.push(name.value)
