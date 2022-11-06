@@ -285,7 +285,7 @@ window.onload = async() => {
 
     selectBox.innerHTML = courseOptionalHtml;
 
-    // Load the info
+    createTeeBoxSelect(selectBox.value)
 
     selectBox.addEventListener("change", () => { createTeeBoxSelect(selectBox.value) } );
 }
