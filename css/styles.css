@@ -1,3 +1,78 @@
+* {
+  font-family: sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 
+body {
+  background-color: #242424;
+  padding-top: 1%;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  overflow: auto;
+  white-space: nowrap;
+}
+.form-group div {
+  width: 60%;
+}
+.form-group div label {
+  margin-top: 10px;
+}
+.form-group button {
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: none;
+  margin: 10px 0px;
+}
+.form-group :last-child {
+  display: flex;
+  flex-direction: column;
+}
+.form-group :last-child input {
+  width: 150px;
+  padding: 5px;
+  border-radius: 10px;
+}
+.form-group :last-child button {
+  width: 100px;
+}
+
+.change-value {
+  overflow: auto;
+  white-space: nowrap;
+}
+.change-value * {
+  display: inline;
+}
+.change-value button {
+  padding: 1px 5px;
+}
+
+.table {
+  background-color: purple;
+  background: linear-gradient(to bottom right, #AA336A, purple);
+  border-radius: 10px;
+  color: #d8baba;
+}
+
+#scorecard {
+  display: flex;
+  flex-direction: column;
+}
+#scorecard #total {
+  align-self: center;
+}
+#scorecard #total caption {
+  caption-side: top;
+}
 
 /*# sourceMappingURL=styles.css.map */

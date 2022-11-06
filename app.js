@@ -61,14 +61,7 @@ async function createTable() {
     firstTable.innerHTML = tableStructure;
     secondTable.innerHTML = tableStructure; 
     totalTable.innerHTML = `
-        <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">
-                    <h1>Total</h1>
-                </th>
-            </tr>
-        </thead>
+        <caption><h2>Total</h2></caption>
         <tbody>
         </tbody>
     `;
@@ -244,14 +237,14 @@ function addPlayer() {
 
     for (let i = 0; i < 9; i++) {
         firstTable.children[firstTable.children.length - 1].innerHTML += `
-            <td>
-                <button class="change-value" onclick="changeValue(-1, this)">-</button><p>0</p><button class="change-value" onclick="changeValue(1, this)">+</button>
+            <td class="change-value">
+                <button onclick="changeValue(-1, this)">-</button><p>0</p><button onclick="changeValue(1, this)">+</button>
             </td>
         `;
 
         secondTable.children[secondTable.children.length - 1].innerHTML += `
-            <td>
-                <button class="change-value" onclick="changeValue(-1, this)">-</button><p>0</p><button class="change-value" onclick="changeValue(1, this)">+</button>
+            <td class="change-value">
+                <button onclick="changeValue(-1, this)">-</button><p>0</p><button onclick="changeValue(1, this)">+</button>
             </td>
         `; 
     }
@@ -269,11 +262,13 @@ window.onload = async() => {
     
     addHtml.innerHTML += `
         <div class="form-group">
-            <label for="course-select">Select Course</label>
-            <select class="form-control" id="course-select"></select>
-            <label for="tee-box-select">Select Difficulty</label>
-            <select class="form-control" id="tee-box-select"></select>
-            <button type="button" onclick="createTable()">New Game</button>
+            <div>
+                <label for="course-select">Select Course</label>
+                <select class="form-control" id="course-select"></select>
+                <label for="tee-box-select">Select Difficulty</label>
+                <select class="form-control" id="tee-box-select"></select>
+                <button type="button" onclick="createTable()">New Game</button>
+            </div>
             <div class"add-player">
                 <input id="player-name" type="text" placeholder="Enter Name">
                 <button type="button" onclick="addPlayer()">Add Player</button>
