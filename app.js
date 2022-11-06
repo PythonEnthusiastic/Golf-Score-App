@@ -36,7 +36,8 @@ async function createTable() {
     let courseID = document.getElementById("course-select")
     let courseInformation = await getCourseFromId(courseID.value);
     let teeInformation = document.querySelector("#tee-box-select");
-    let [firstTable, secondTable] = document.getElementsByClassName("table");
+    let [firstTable, secondTable] = document.getElementsByClassName("scorecard");
+    let totalTable = document.getElementById("totalTable")
 
     let tableStructure = `
         <thead>
@@ -59,6 +60,19 @@ async function createTable() {
 
     firstTable.innerHTML = tableStructure;
     secondTable.innerHTML = tableStructure; 
+    totalTable.innerHTML = `
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">
+                    <h1>Total</h1>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    `;
+    
 
     // Get the thead and tbody for the first table
     let firstTableBody = firstTable.children[1];
@@ -175,7 +189,19 @@ async function createTable() {
 }
 
 function changeValue(val, id) {
-    let something = document.getElementById(id);
+    let something = id.parentElement;
+    let totalTable = document.getElementById("totalTable");
+
+    let tableRowName = something.parentElement.children[0];
+    let totalRowName = totalTable.children[1].children;
+
+    console.log(tableRowName)
+
+    for (let i = 0; i < totalRowName.length; i++) {
+        if (totalRowName[i].children[0].textContent == tableRowName.textContent) {
+            totalRowName[i].children[1].textContent = parseInt(totalRowName[i].children[1].textContent) + val;
+        }
+    }
 
     something.children[1].textContent = parseInt(something.children[1].textContent) + val;
 
@@ -186,6 +212,7 @@ function changeValue(val, id) {
 
 function addPlayer() {
     let name = document.getElementById("player-name");
+    let totalTable = document.getElementById("totalTable");
 
     if (playerNames.includes(name.value)) {
         alert("Can't use the same name more than once!")
@@ -203,19 +230,28 @@ function addPlayer() {
         </tr>
     `;
 
+    console.log(totalTable.children[1])
+
+    totalTable.children[1].innerHTML += `
+        <tr>
+            <th scope="row">${name.value}</th>
+            <th scope="row">0</th>
+        </tr>
+    `;
+
     firstTable.innerHTML += playerNameRow;
     secondTable.innerHTML += playerNameRow;
 
     for (let i = 0; i < 9; i++) {
         firstTable.children[firstTable.children.length - 1].innerHTML += `
-            <td id="${i}-first">
-                <button class="change-value" onclick="changeValue(-1, '${i}-first')">-</button><p>0</p><button class="change-value" onclick="changeValue(1, '${i}-first')">+</button
+            <td>
+                <button class="change-value" onclick="changeValue(-1, this)">-</button><p>0</p><button class="change-value" onclick="changeValue(1, this)">+</button>
             </td>
         `;
 
         secondTable.children[secondTable.children.length - 1].innerHTML += `
-            <td id="${i}-second">
-                <button class="change-value" onclick="changeValue(-1, '${i}-second')">-</button><p>0</p><button class="change-value" onclick="changeValue(1, '${i}-second')")>+</button>
+            <td>
+                <button class="change-value" onclick="changeValue(-1, this)">-</button><p>0</p><button class="change-value" onclick="changeValue(1, this)">+</button>
             </td>
         `; 
     }
