@@ -174,6 +174,16 @@ async function createTable() {
     `;
 }
 
+function changeValue(val, id) {
+    let something = document.getElementById(id);
+
+    something.children[1].textContent = parseInt(something.children[1].textContent) + val;
+
+    let totalRow = something.parentElement.children[10];
+
+    totalRow.textContent = parseInt(totalRow.textContent) + val;
+};
+
 function addPlayer() {
     let name = document.getElementById("player-name");
 
@@ -196,15 +206,22 @@ function addPlayer() {
     firstTable.innerHTML += playerNameRow;
     secondTable.innerHTML += playerNameRow;
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 9; i++) {
         firstTable.children[firstTable.children.length - 1].innerHTML += `
-            <td>0</td>
+            <td id="${i}-first">
+                <button class="change-value" onclick="changeValue(-1, '${i}-first')">-</button><p>0</p><button class="change-value" onclick="changeValue(1, '${i}-first')">+</button
+            </td>
         `;
 
         secondTable.children[secondTable.children.length - 1].innerHTML += `
-            <td>0</td>
+            <td id="${i}-second">
+                <button class="change-value" onclick="changeValue(-1, '${i}-second')">-</button><p>0</p><button class="change-value" onclick="changeValue(1, '${i}-second')")>+</button>
+            </td>
         `; 
     }
+
+    firstTable.children[firstTable.children.length - 1].innerHTML += `<td>0</td>`;
+    secondTable.children[firstTable.children.length - 1].innerHTML += `<td>0</td>`;
 
     playerNames.push(name.value)
 }
